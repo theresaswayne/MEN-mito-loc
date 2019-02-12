@@ -15,33 +15,41 @@ require(tidyverse)
 # TODO: update to allow user to select locations
 
 # ENTER BACKGROUND FILE INFO HERE -----
-subfolder_bkgd <- file.path("2019-02-04 HK", "2018.12.18 PSY109 at 25C and 36C deconvolved")
+subfolder_bkgd <- file.path("testdata", "GTY027")
 inputFolder_bkgd <- here(file.path("data",subfolder_bkgd))
-bkgdfile <- "Extracellular Background GFP Channel PSY109.csv"
+bkgdfile <- "Extracellular Background GFP Channel GTY027.csv"
 
-xcell_bg <- read_csv(file.path(inputFolder, bkgdfile),
+xcell_bg <- read_csv(file.path(inputFolder_bkgd, bkgdfile),
                      locale = locale(encoding = "latin1"),
-                     col_types = cols_only(ItemName = "c", ExtracellularBackground = "d"))
+                     col_types = cols_only(
+                       ItemName = "c", 
+                       ExtracellularBackground = "d")) %>%
+  select(ItemName, ExtracellularBackground) # omit crazy other column(s)
 
   # can safely ignore warning message about missing column names
 
+# TODO: omit rows with NAs
+
+names(xcell_bg)[names(xcell_bg)=="ItemName"] <- "Item Name" # change column name to match the Volocity file column
+
 # ENTER CELL FOLDER INFO HERE ----------
 
-subfolder_cells <- file.path("2019-02-04 HK", "2018.12.18 PSY109 at 25C and 36C deconvolved", "PSY109 CSV")
+subfolder_cells <- file.path("testdata", "GTY027", "cells")
 
 # Read all the files in the folder ------
 
 inputFolder_cells <- here(file.path("data",subfolder_cells))
-outputFolder <- subfolder_bkgd 
 
 # get file names
-files <- dir(inputFolder, pattern = "*.csv") 
+files <- dir(inputFolder_cells, pattern = "*.csv") 
+
+# TODO: change to default all columns to double
 
 # tibble is used because of the warning that data_frame is deprecated.
 mergedDataWithNames <- tibble(filename = files) %>% # tibble holding file names
   mutate(file_contents =
            map(filename,          # read files into a new data column
-               ~ read_csv(file.path(inputFolder, .),
+               ~ read_csv(file.path(inputFolder_cells, .),
                           locale = locale(encoding = "latin1"),
                           na = c("", "N/A"),
                           col_types = cols(`Number of contained Mito` = col_double(),
@@ -58,9 +66,14 @@ df <- filter(mergedDataFlat, Population != "Whole cells prelim") %>% # unwanted 
   arrange(filename,ID)  # sort rows
 
 
-# Write an output file of all the merged data ----------
+# TODO: Modify this to left-join the background into the merged file
+df_bkd <- df %>% left_join(xcell_bg) # only common column is ItemName
 
-outputFile = paste(subfolder_bkgd, Sys.Date(), "merged.csv") # spaces will be inserted
-#write_csv(df,file.path(outputFolder, outputFile))
+
+# Write an output file of all the merged data ----------
+outputFolder <- inputFolder_bkgd 
+
+outputFile = paste(Sys.Date(), "merged.csv") # spaces will be inserted
+write_csv(df_bkd,file.path(outputFolder, outputFile))
 #TODO: read background here and merge it all at once
 
