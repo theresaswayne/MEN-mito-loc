@@ -24,9 +24,9 @@ voxel_size <- 0.0011907 #     voxel size is 0.0011907 um3
 # TODO: update to allow user to select file
 
 # ENTER BACKGROUND FILENAME HERE ---
-subfolder <- file.path("2019-01-28 PSY106 25C and 36C colony")
+subfolder <- file.path("2019-02-10 HK", "GTY027")
 inputFolder <- here(file.path("data",subfolder))
-bkgdfile <- "Extracellular Background GFP Channel PSY106 colony.csv"
+bkgdfile <- "Extracellular Background GFP Channel GTY027.csv"
 
 xcell_bg <- read_csv(file.path(inputFolder, bkgdfile),
                           locale = locale(encoding = "latin1")) %>%
@@ -241,7 +241,7 @@ se_36_mean <- se(restrTmean)
 # Save csv table ------
 # overwrites without warning!
 
-outputFile2 = paste(Sys.Date(), "mito_loc_xc_filt.csv") # spaces will be inserted
+outputFile2 = paste(Sys.Date(), "2019-02-10 GTY027 mito_loc_xc_filt.csv") # spaces will be inserted
 
 write_csv(corrected_mito_loc_xc_filt, file.path(here("data"), subfolder, outputFile2))
 

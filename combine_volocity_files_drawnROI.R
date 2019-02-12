@@ -13,7 +13,7 @@ require(tidyverse)
 # REQUIREMENT: All files must be within a single folder in the "data" folder in the project home
 
 # TODO: update to allow user to select folder
-subfolder <- file.path("2019-01-28 PSY106 25C and 36C colony", "cells")
+subfolder <- file.path("2019-02-10 HK", "GTY027", "cells")
 
 # Read all the files in the folder ------
 
@@ -47,6 +47,6 @@ df <- filter(mergedDataFlat, Population != "Whole cells prelim") %>% # unwanted 
 # Write an output file of all the merged data ----------
 
 outputFile = paste(subfolder, Sys.Date(), "merged.csv") # spaces will be inserted
-#write_csv(df,file.path(outputFolder, outputFile))
+write_csv(df,file.path(outputFolder, outputFile))
 #TODO: read background here and merge it all at once
 
