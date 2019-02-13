@@ -14,10 +14,12 @@ require(tidyverse)
 
 # TODO: update to allow user to select locations
 
+
 # ENTER BACKGROUND FILE INFO HERE -----
 subfolder_bkgd <- file.path("testdata", "GTY027")
 inputFolder_bkgd <- here(file.path("data",subfolder_bkgd))
-bkgdfile <- "Extracellular Background GFP Channel GTY027.csv"
+
+bkgdfile <- file.choose() # opens a file chooser window, no message
 
 xcell_bg <- read_csv(file.path(inputFolder_bkgd, bkgdfile),
                      locale = locale(encoding = "latin1"),
