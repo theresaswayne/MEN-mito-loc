@@ -1,9 +1,10 @@
 # merge_volocity_cell_bkgd.R
-# imports, merges, sorts, and simplifies a batch of csv files exported from Volocity 6.3 and a separate background spreadsheet csv
 # Theresa Swayne, Columbia University, 2019
+# imports, merges, sorts, and simplifies a batch of csv files exported from Volocity 6.3 and a separate background spreadsheet csv
+# saves a CSV with the merged data
 
 # REQUIREMENTS: 
-# -- All cell data files must be within a single folder in the "data" folder in the project home
+# -- All cell data files must be within a single folder
 # -- The background file must be one level above the cell data folder 
 # -- Background file must have 2 columns: 
 #     ItemName
@@ -12,13 +13,12 @@
 # adapted from http://serialmentor.com/blog/2016/6/13/reading-and-combining-many-tidy-data-files-in-R
 
 # Setup -------
-require(here)
-require(tidyverse)
-require(tcltk)
+require(tidyverse) # for reading and parsing
+require(tcltk) # for file choosing
 
 # Get background data -----
 
-bkgdfile <- tk_choose.files(default = "", caption = "Choose the CSV with background values", multi = FALSE) # file chooser window, with a message
+bkgdfile <- tk_choose.files(default = "", caption = "Select the CSV with background values", multi = FALSE) # file chooser window, with a message
 
 xcell_bg <- read_csv(bkgdfile,
                      locale = locale(encoding = "latin1"),
@@ -36,7 +36,7 @@ names(xcell_bg)[names(xcell_bg)=="ItemName"] <- "Item Name" # change column name
 
 # Note -- you must OPEN the folder!
 
-inputFolder_cells <- tk_choose.dir(default = "", caption = "OPEN the folder with cell data files") # prompt user
+inputFolder_cells <- tk_choose.dir(default = "", caption = "OPEN the folder with cell data") # prompt user
 
 # get file names
 files <- dir(inputFolder_cells, pattern = "*.csv") 
@@ -70,10 +70,10 @@ df <- filter(mergedDataFlat, Population != "Whole cells prelim") %>%  # remove u
 df <- df %>% left_join(xcell_bg) # only common column is ItemName
 
 
-# Save merged data one level up ----------
+# Save merged data----------
 
+# saves the data one level up 
 parentName <- basename(dirname(bkgdfile)) # parent directory without higher levels
-
 parentDir <- dirname(bkgdfile)
 
 outputFile = paste(Sys.Date(), parentName, "merged.csv") # spaces will be inserted
