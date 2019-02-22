@@ -2,6 +2,7 @@
 # Theresa Swayne, Columbia University, 2019
 # imports, merges, sorts, and simplifies a batch of csv files exported from Volocity 6.3 and a separate background spreadsheet csv
 # saves a CSV with the merged data
+# supersedes combine_volocity_files_drawnROI.R
 
 # REQUIREMENTS: 
 # -- All cell data files must be within a single folder
@@ -77,5 +78,5 @@ parentName <- basename(dirname(bkgdfile)) # parent directory without higher leve
 parentDir <- dirname(bkgdfile)
 
 outputFile = paste(Sys.Date(), parentName, "merged.csv") # spaces will be inserted
-write_csv(df,file.path(parentDir, outputFile))
+#write_csv(df,file.path(parentDir, outputFile))
 
