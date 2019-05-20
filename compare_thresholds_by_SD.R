@@ -121,4 +121,68 @@ parentName <- basename(dirname(df_file)) # parent directory without higher level
 parentDir <- dirname(df_file)
 
 outputFile = paste(Sys.Date(), parentName, "_mito_loc.csv") # spaces will be inserted
-write_csv(corrected_mito_loc_xc,file.path(parentDir, outputFile))
+#write_csv(corrected_mito_loc_xc,file.path(parentDir, outputFile))
+
+
+# graphs -------
+
+# Compare values obtained for each cell from different thresholds ---- 
+
+# For this we need a new column, cell name 
+# (this is filename minus the last 6 characters)
+# TODO: add this to the mito loc script
+
+corrected_mito_loc_xc <- corrected_mito_loc_xc %>% mutate(CellName = str_sub(filename, end = -10))
+
+# Mito volume ---
+
+# qual palette gives 3 different colors
+# as.factor treats the thresh values as discrete
+
+mv <- ggplot(corrected_mito_loc_xc, aes(x = corrected_mito_loc_xc$MitoVolume_um3, y = corrected_mito_loc_xc$CellName, colour = as.factor(corrected_mito_loc_xc$MitoThresh))) +
+  geom_point(alpha = 0.8, size = 1) +
+  scale_color_brewer(type = "qual", palette = 1, direction = 1, aesthetics = "colour") +
+  labs(title = "Mito volume in all cells by threshold") +
+  theme_bw() +
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y.left = element_blank(),
+        panel.grid = element_blank()) # suppress tick labels and gridlines
+
+print(mv)
+
+# Mito SD ---
+msd <- ggplot(corrected_mito_loc_xc, aes(x = corrected_mito_loc_xc$RawMitoSD, y = corrected_mito_loc_xc$CellName, colour = as.factor(corrected_mito_loc_xc$MitoThresh))) +
+  geom_point(alpha = 0.8, size = 1) +
+  scale_color_brewer(type = "qual", palette = 1, direction = 1, aesthetics = "colour") +
+  labs(title = "Raw Mito SD by threshold") +
+  theme_bw() +
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y.left = element_blank(),
+        panel.grid = element_blank()) # suppress tick labels and gridlines
+
+print(msd)
+
+# Mito mean ---
+mm <- ggplot(corrected_mito_loc_xc, aes(x = corrected_mito_loc_xc$MitoMeanCorr, y = corrected_mito_loc_xc$CellName, colour = as.factor(corrected_mito_loc_xc$MitoThresh))) +
+  geom_point(alpha = 0.8, size = 1) +
+  scale_color_brewer(type = "qual", palette = 1, direction = 1, aesthetics = "colour") +
+  labs(title = "Mito mean by threshold") +
+  theme_bw() +
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y.left = element_blank(),
+        panel.grid = element_blank()) # suppress tick labels and gridlines
+
+print(mm)
+
+
+# Mito SD/mean ---
+msdmm <- ggplot(corrected_mito_loc_xc, aes(x = (corrected_mito_loc_xc$RawMitoSD/corrected_mito_loc_xc$RawMitoMean), y = corrected_mito_loc_xc$CellName, colour = as.factor(corrected_mito_loc_xc$MitoThresh))) +
+  geom_point(alpha = 0.8, size = 1) +
+  scale_color_brewer(type = "qual", palette = 1, direction = 1, aesthetics = "colour") +
+  labs(title = "Mito SD:mean by threshold") +
+  theme_bw() +
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y.left = element_blank(),
+        panel.grid = element_blank()) # suppress tick labels and gridlines
+
+print(msdmm)
