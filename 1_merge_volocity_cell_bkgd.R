@@ -78,5 +78,5 @@ parentName <- basename(dirname(bkgdfile)) # parent directory without higher leve
 parentDir <- dirname(bkgdfile)
 
 outputFile = paste(Sys.Date(), parentName, "merged.csv") # spaces will be inserted
-#write_csv(df,file.path(parentDir, outputFile))
+write_csv(df,file.path(parentDir, outputFile))
 
