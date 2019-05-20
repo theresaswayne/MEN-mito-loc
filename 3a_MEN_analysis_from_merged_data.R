@@ -157,6 +157,8 @@ plot50filt <- ggplot(corrected_mito_loc_xc_50filt, aes(factor(Temp), MitoLoc)) +
 parentDir <- dirname(df_file)
 # parentName <- basename(dirname(df_file)) # parent directory without higher levels
 
+# TODO: Save n, fold change, wilcoxon p
+
 ggsave(plot = plot25, filename = file.path(parentDir, paste(Sys.Date(), strain, "offset -25.png")))
 ggsave(plot = plot35, filename = file.path(parentDir, paste(Sys.Date(), strain, "offset -35.png")))
 ggsave(plot = plot50, filename = file.path(parentDir, paste(Sys.Date(), strain, "offset -50.png")))
