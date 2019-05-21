@@ -109,12 +109,14 @@ wilcoxon_50 <- wilcox.test(MitoLoc ~ Temp, data = corrected_mito_loc_xc_50)$p.va
 
 # boxplot(corrected_mito_loc_xc_25$MitoLoc ~ corrected_mito_loc_xc_25$Temp, main = "Mitochondrial localization (mito mean/cell mean), offset -25, SD/mean < 0.3") # whiskers extend to 1.5x interquartile range
 # 
-# plot25 <- ggplot(corrected_mito_loc_xc_25, aes(factor(Temp), MitoLoc)) +
-#   geom_boxplot(color = "black", fill = "grey75") +
-#   labs(title =  paste("Mitochondrial Localization,", strain, ", offset -25"),
-#        x = "Temperature", y = "Mito Mean / Cell Mean") +
-#   theme_bw() +
-#   theme(text = element_text(size=18))
+
+plot25 <- ggplot(corrected_mito_loc_xc_25, aes(factor(Temp), MitoLoc)) +
+  geom_boxplot(color = "black", fill = "blue", alpha = 0.5) +
+  scale_y_continuous(limits=c(0,8)) +
+  labs(title =  paste("Mitochondrial Localization,", strain),
+       x = "Temperature", y = "Mito Mean / Cell Mean") +
+  theme_bw() +
+  theme(text = element_text(size=18), plot.title = element_text(size = 14, face="bold"))
 # 
 # plot35 <- ggplot(corrected_mito_loc_xc_35, aes(factor(Temp), MitoLoc)) +
 #   geom_boxplot(color = "black", fill = "grey75") +
@@ -129,14 +131,14 @@ wilcoxon_50 <- wilcox.test(MitoLoc ~ Temp, data = corrected_mito_loc_xc_50)$p.va
 #        x = "Temperature", y = "Mito Mean / Cell Mean") +
 #   theme_bw()+
 #   theme(text = element_text(size=18))
-
-plot25filt <- ggplot(corrected_mito_loc_xc_25filt, aes(factor(Temp), MitoLoc)) +
-  geom_boxplot(color = "black", fill = "blue", alpha = 0.5) +
-  scale_y_continuous(limits=c(0,8)) +
-  labs(title =  paste("Mitochondrial Localization,", strain),
-       x = "Temperature", y = "Mito Mean / Cell Mean") +
-  theme_bw() +
-  theme(text = element_text(size=18), plot.title = element_text(size = 14, face="bold"))
+# 
+# plot25filt <- ggplot(corrected_mito_loc_xc_25filt, aes(factor(Temp), MitoLoc)) +
+#   geom_boxplot(color = "black", fill = "blue", alpha = 0.5) +
+#   scale_y_continuous(limits=c(0,8)) +
+#   labs(title =  paste("Mitochondrial Localization,", strain),
+#        x = "Temperature", y = "Mito Mean / Cell Mean") +
+#   theme_bw() +
+#   theme(text = element_text(size=18), plot.title = element_text(size = 14, face="bold"))
 # 
 # plot35filt <- ggplot(corrected_mito_loc_xc_35filt, aes(factor(Temp), MitoLoc)) +
 #   geom_boxplot(color = "black", fill = "grey75") +
@@ -166,12 +168,12 @@ parentDir <- dirname(df_file)
 
 # TODO: Save n, fold change, wilcoxon p
 # 
-# ggsave(plot = plot25, filename = file.path(parentDir, paste(Sys.Date(), strain, "offset -25.png")))
+ggsave(plot = plot25, filename = file.path(parentDir, paste(Sys.Date(), strain, "offset -25.png")))
 # ggsave(plot = plot35, filename = file.path(parentDir, paste(Sys.Date(), strain, "offset -35.png")))
 # ggsave(plot = plot50, filename = file.path(parentDir, paste(Sys.Date(), strain, "offset -50.png")))
 
 
-ggsave(plot = plot25filt, filename = file.path(parentDir, paste(Sys.Date(), strain, "offset -25 SD filt.png")))
+# ggsave(plot = plot25filt, filename = file.path(parentDir, paste(Sys.Date(), strain, "offset -25 SD filt.png")))
 # ggsave(plot = plot35filt, filename = file.path(parentDir, paste(Sys.Date(), strain, "offset -35 SD filt.png")))
 # ggsave(plot = plot50filt, filename = file.path(parentDir, paste(Sys.Date(), strain, "offset -50 SD filt.png")))
 
